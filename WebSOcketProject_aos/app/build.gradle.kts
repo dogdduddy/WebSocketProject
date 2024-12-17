@@ -47,4 +47,7 @@ dependencies {
 
     // okHttp
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
+    // gson
+    implementation("com.google.code.gson:gson:2.11.0")
 }

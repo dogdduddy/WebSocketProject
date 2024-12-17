@@ -7,18 +7,45 @@
     tools:context=".MainActivity">
 
     <EditText
-        android:id="@+id/editTextView"
+        android:id="@+id/userNameEditTextView"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:hint="User Name"
         app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <Button
+        android:id="@+id/userNameSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        app:layout_constraintTop_toBottomOf="@+id/userNameEditTextView"
+        app:layout_constraintStart_toStartOf="@+id/userNameEditTextView"/>
+
+    <Button
+        android:id="@+id/userNameEditButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/userNameEditTextView"
+        app:layout_constraintStart_toEndOf="@+id/userNameSaveButton"/>
+
+
+    <EditText
+        android:id="@+id/messageEditTextView"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Message"
+        app:layout_constraintTop_toBottomOf="@+id/userNameSaveButton"/>
 
     <Button
         android:id="@+id/connectingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connecting"
-        app:layout_constraintTop_toBottomOf="@+id/editTextView"
-        app:layout_constraintStart_toStartOf="@+id/editTextView"/>
+        app:layout_constraintTop_toBottomOf="@+id/messageEditTextView"
+        app:layout_constraintStart_toStartOf="@+id/messageEditTextView"/>
 
     <Button
         android:id="@+id/sendButton"
@@ -26,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Send"
         android:layout_marginStart="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/editTextView"
+        app:layout_constraintTop_toBottomOf="@+id/messageEditTextView"
         app:layout_constraintStart_toEndOf="@+id/connectingButton"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

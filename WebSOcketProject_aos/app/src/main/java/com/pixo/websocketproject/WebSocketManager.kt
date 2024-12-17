@@ -1,6 +1,7 @@
 package com.pixo.websocketproject
 
 import android.util.Log
+import com.google.gson.Gson
 import okhttp3.*
 import okio.ByteString
 
@@ -8,16 +9,20 @@ class WebSocketManager {
     private val client = OkHttpClient()
     private lateinit var webSocket: WebSocket
 
-    fun connectWebSocket(url: String) {
+    private val gson = Gson()
+
+    fun connectWebSocket(url: String, listener: (chat: ChatMessage) -> Unit) {
         val request = Request.Builder().url(url).build()
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 Log.d("SocketLog","WebSocket 연결 성공!")
                 // 서버로 메시지 전송
-                webSocket.send("Hello, Server!")
+//                webSocket.send("Hello, Server!")
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
+                val chatMessage = gson.fromJson(text, ChatMessage::class.java)
+                listener(chatMessage)
                 Log.d("SocketLog","받은 메시지: $text")
             }
 
@@ -35,8 +40,10 @@ class WebSocketManager {
         })
     }
 
-    fun sendMessage(message: String) {
-        webSocket.send(message)
+    fun sendChatMessage(chatMessage: ChatMessage) {
+        val jsonChatMessage = gson.toJson(chatMessage)
+        Log.d("SocketLog","chatMessage in Manager : $jsonChatMessage")
+        webSocket.send(jsonChatMessage)
     }
 
     fun closeWebSocket() {
