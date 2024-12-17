@@ -12,8 +12,14 @@ class ChatHandler : TextWebSocketHandler() {
     private val sessions = mutableSetOf<WebSocketSession>()
 
     override fun afterConnectionEstablished(session: WebSocketSession) {
-        println("클라이언트 연결됨: ${session.id}")
-        sessions.add(session)
+        if (sessions.contains(session)) {
+            println("클라이언트 재연결 : ${session.id}")
+            sessions.remove(session)
+            sessions.add(session)
+        } else {
+            println("클라이언트 연결 : ${session.id}")
+            sessions.add(session)
+        }
     }
 
     override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
