@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         connectingButton.setOnClickListener {
             Log.d("SocketLog","socket Connection Button Click")
-            wsManager.connectWebSocket("ws://localhost:8080/chat")
+            wsManager.connectWebSocket("ws://10.0.2.2:8080/chat")
         }
 
         sendButton.setOnClickListener {
