@@ -9,10 +9,11 @@ class ChatHandler : TextWebSocketHandler() {
 
     private val objectMapper = ObjectMapper() // Jackson ObjectMapper
     private val messageStorage = mutableListOf<ChatMessage>()
+    private val sessions = mutableSetOf<WebSocketSession>()
 
     override fun afterConnectionEstablished(session: WebSocketSession) {
         println("클라이언트 연결됨: ${session.id}")
-//        session.sendMessage(TextMessage("서버에 연결되었습니다."))
+        sessions.add(session)
     }
 
     override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
@@ -21,8 +22,7 @@ class ChatHandler : TextWebSocketHandler() {
             messageStorage.add(chatMessage)
             message.payload
         }.onSuccess { value ->
-            // echo Message
-            session.sendMessage(TextMessage(value))
+            broadcastMessage(value)
         }.onFailure { exception ->
             println("error : $exception")
         }
@@ -31,10 +31,19 @@ class ChatHandler : TextWebSocketHandler() {
 
     override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
         println("클라이언트 연결 종료: ${session.id}")
+        sessions.remove(session)
     }
 
     override fun handleTransportError(session: WebSocketSession, exception: Throwable) {
         println("WebSocket 오류: ${exception.message}")
+    }
+
+    private fun broadcastMessage(message: String) {
+        for (session in sessions) {
+            if (session.isOpen) {
+                session.sendMessage(TextMessage(message))
+            }
+        }
     }
 }
 
