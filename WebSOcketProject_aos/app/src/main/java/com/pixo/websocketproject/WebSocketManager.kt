@@ -16,8 +16,6 @@ class WebSocketManager {
         webSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 Log.d("SocketLog","WebSocket 연결 성공!")
-                // 서버로 메시지 전송
-//                webSocket.send("Hello, Server!")
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
