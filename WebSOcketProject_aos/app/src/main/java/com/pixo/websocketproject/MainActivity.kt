@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.annotations.SerializedName
 import com.pixo.websocketproject.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), WebSocketManager.ConnectionListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         wsManager = WebSocketManager()
+        wsManager.setConnectionListener(this)
 
         val serverActionListener: (chat: ChatMessage) -> Unit = { chat ->
             runOnUiThread {
@@ -68,6 +70,24 @@ class MainActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
             recyclerView.adapter = chatAdapter
 
+        }
+    }
+
+    override fun onConnected() {
+        runOnUiThread {
+            Toast.makeText(this@MainActivity, "Socket Connected", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onDisconnected() {
+        runOnUiThread {
+            Toast.makeText(this@MainActivity, "Socket Disconnected", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun onError(error: String) {
+        runOnUiThread {
+            Toast.makeText(this@MainActivity, "Error : $error", Toast.LENGTH_LONG).show()
         }
     }
 
